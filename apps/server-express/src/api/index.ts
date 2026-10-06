@@ -1,7 +1,12 @@
 import { Router } from "express";
 import { z } from "zod";
 
-type User = { id: number; name: string; email: string; age: number };
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+};
 
 const users: User[] = [];
 
@@ -17,10 +22,16 @@ api.post("/createUser", (req, res) => {
   const parsed = createUserSchema.safeParse(req.body);
 
   if (!parsed.success) {
-    return res.status(400).json({ error: "Invalid input" });
+    return res.status(400).json({
+      error: "Invalid input",
+    });
   }
 
-  const user = { id: users.length + 1, ...parsed.data };
+  const user: User = {
+    id: users.length + 1,
+    ...parsed.data,
+  };
+
   users.push(user);
 
   res.status(201).json(user);
