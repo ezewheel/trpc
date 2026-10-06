@@ -1,0 +1,23 @@
+packages:
+  - "apps/*"
+
+allowBuilds:
+  esbuild: true
+
+# pnpm instala los binarios nativos (esbuild, TypeScript) solo para la
+# plataforma desde la que corre `pnpm install`. Como este repo se usa desde
+# Windows y desde WSL, cada install borraba los binarios de la otra
+# plataforma y dejaba el proyecto a medias: install desde WSL dejaba roto
+# tsx/tsc en Windows, y al revés.
+#
+# Con esto, un solo install deja los binarios de AMBAS plataformas y se
+# puede correr node/tsc/tsx indistintamente desde Windows o desde WSL,
+# sin reinstalar en el medio.
+supportedArchitectures:
+  os:
+    - current
+    - linux
+    - win32
+  cpu:
+    - current
+    - x64

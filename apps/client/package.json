@@ -1,0 +1,17 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@trpc/client": "^11.19.0",
+    "server": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

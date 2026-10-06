@@ -1,0 +1,13 @@
+{
+  "name": "trpc",
+  "version": "1.0.0",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.9.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.9.1"
+}
