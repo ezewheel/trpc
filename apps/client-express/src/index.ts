@@ -12,20 +12,25 @@ async function main() {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
-      // falta el nombre, pero TypeScript no detecta el error.
+      // falta 'name', pero TypeScript no detecta el error
       email: "ana@mail.com",
       age: 28,
     }),
   });
 
-  const user = (await res.json()) as User;
+  const data = await res.json();
+
+  if (!res.ok) {
+    // el error se descubre recién cuando hacemos la request.
+    console.log("Error:", data);
+    return;
+  }
+
+  // confiamos en que la respuesta es un User
+  const user = data as User;
 
   console.log("Creado:", user);
   console.log(user.name);
 }
 
-// El endpoint, el método HTTP y el formato de la request
-// los definimos manualmente.
-
-// Además, User es otra definición del contrato:
-// si el servidor cambia, esta interfaz puede quedar desactualizada.
+main();

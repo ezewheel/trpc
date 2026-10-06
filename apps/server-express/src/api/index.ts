@@ -1,38 +1,40 @@
-import { Router } from "express";
-import { z } from "zod";
+const BASE = "http://localhost:3002";
 
-type User = {
+// El tipo de respuesta lo tenemos que definir manualmente.
+// Si el servidor cambia, esta definición puede quedar desactualizada.
+interface User {
   id: number;
   name: string;
   email: string;
   age: number;
-};
+}
 
-const users: User[] = [];
+async function main() {
+  const res = await fetch(`${BASE}/createUser`, {
+    // Tenemos que definir manualmente el endpoint y el método HTTP.
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      // Falta 'name', pero TypeScript no detecta el error:
+      // el objeto enviado a fetch no está vinculado al contrato del servidor.
+      email: "ana@mail.com",
+      age: 28,
+    }),
+  });
 
-const createUserSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  age: z.number().int().min(18),
-});
+  const data = await res.json();
 
-export const api = Router();
-
-api.post("/createUser", (req, res) => {
-  const parsed = createUserSchema.safeParse(req.body);
-
-  if (!parsed.success) {
-    return res.status(400).json({
-      error: "Invalid input",
-    });
+  if (!res.ok) {
+    // El error se descubre recién cuando hacemos la request.
+    console.log("Error:", data);
+    return;
   }
 
-  const user: User = {
-    id: users.length + 1,
-    ...parsed.data,
-  };
+  // 'as User' no valida la respuesta: TypeScript simplemente confía en nosotros.
+  const user = data as User;
 
-  users.push(user);
+  console.log("Creado:", user);
+  console.log(user.name);
+}
 
-  res.status(201).json(user);
-});
+main();

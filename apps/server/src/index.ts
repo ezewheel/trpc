@@ -1,7 +1,10 @@
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import { appRouter } from "./api";
 
-const server = createHTTPServer({ router: appRouter });
+const server = createHTTPServer({
+  basePath: "/trpc/",
+  router: appRouter,
+});
 
-server.listen(3005);
-console.log("Servidor tRPC en http://localhost:3005");
+server.listen(3001);
+console.log("Servidor tRPC en http://localhost:3001");

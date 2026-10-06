@@ -3,14 +3,14 @@ import { z } from "zod";
 
 const t = initTRPC.create();
 
+const users: User[] = [];
+
 type User = {
   id: number;
   name: string;
   email: string;
   age: number;
 };
-
-const users: User[] = [];
 
 export const appRouter = t.router({
   createUser: t.procedure
@@ -32,6 +32,5 @@ export const appRouter = t.router({
     }),
 });
 
-// El cliente puede importar este tipo.
-// No necesita copiar manualmente el contrato de la API.
+// el cliente importa este tipo, conoce la estructura de la API
 export type AppRouter = typeof appRouter;
